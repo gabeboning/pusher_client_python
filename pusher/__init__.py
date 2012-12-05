@@ -71,8 +71,9 @@ class Channel(object):
         self.name = name
         self.path = '/apps/%s/channels/%s/events' % (self.pusher.app_id, self.name)
 
-    def trigger(self, event, data={}, socket_id=None):
-        json_data = json.dumps(data)
+    def trigger(self, event, data={}, json_data=None, socket_id=None):
+        if json_data is None:
+            json_data = json.dumps(data)
         status = self.send_request(self.signed_query(event, json_data, socket_id), json_data)
         if status == 202:
             return True
